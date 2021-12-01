@@ -1,4 +1,4 @@
-raw_input = """171
+171
 173
 174
 163
@@ -1998,24 +1998,3 @@ raw_input = """171
 3267
 3280
 3282
-"""
-formatted_input = raw_input.split()
-
-increased_task_1 = 0
-
-for i in range(len(formatted_input)):
-    if i != 0 and int(formatted_input[i]) > int(formatted_input[i - 1]):
-        increased_task_1 += 1
-
-print(increased_task_1)
-
-increased_task_2 = 0
-
-def calculate_value(index):
-    return int(formatted_input[index]) + int(formatted_input[index + 1]) + int(formatted_input[index + 2])
-
-for i in range(len(formatted_input) - 2):
-    if i != 0 and calculate_value(i) > calculate_value(i - 1):
-            increased_task_2 += 1
-
-print(increased_task_2)
