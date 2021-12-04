@@ -30,8 +30,8 @@ def main():
     def calculate_board(board):
         """Takes in a board and returns the score of the board and the number of moves it took"""
         # first 5 are columns, second 5 are rows
-        hasWon = False
         buckets = [0] * 10
+        hasWon = False
         unused_numbers = [j for sub in board for j in sub]
         moves = 0
         for number in puzzle_numbers:
