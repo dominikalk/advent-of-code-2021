@@ -15,7 +15,7 @@ def main():
     for line in f:
         puzzle_input.append(line.strip().replace(' -> ', ',').split(","))
 
-    grid = [[0] * 10] * 10
+    grid = [[0] * 999 for _ in range(999)]
 
     def unit(number):
         if number < 0:
@@ -28,45 +28,34 @@ def main():
             index_difference = 1
 
         difference = int(vent_line[1 - index_difference]) - int(vent_line[3 - index_difference])
-        if abs(difference) < 15:
-            print(vent_line)
-            print(difference)
         for i in range(0, abs(difference) + 1):
-            # if index_difference == 1:
-            print(int(vent_line[2]) + (i * unit(difference)), int(vent_line[1]))
-            print(the_grid[int(vent_line[2]) + (i * unit(difference))][int(vent_line[1])] + 1)
-            the_grid[int(vent_line[2]) + (i * unit(difference))][int(vent_line[1])] += 1
-            # else:
-            #     if abs(difference) < 15:
-            #         print(the_grid[int(vent_line[0])][int(vent_line[3]) + (i * unit(difference))] + 1)
-            #     the_grid[int(vent_line[0])][int(vent_line[3]) + (i * unit(difference))] += 1
+            if index_difference == 1:
+                the_grid[int(vent_line[1])][int(vent_line[2]) + (i * unit(difference))] += 1
+            else:
+                the_grid[int(vent_line[3]) + (i * unit(difference))][int(vent_line[0])] += 1
 
-    # for vent_line in puzzle_input:
-    #     if vent_line[0] == vent_line[2] or vent_line[1] == vent_line[3]:
-    #         calculate_line_straigt(vent_line)
-
-    vent_line = puzzle_input[0]
-    if vent_line[0] == vent_line[2] or vent_line[1] == vent_line[3]:
-        calculate_line_straigt(vent_line, grid)
+    for vent_line in puzzle_input:
+        if vent_line[0] == vent_line[2] or vent_line[1] == vent_line[3]:
+            calculate_line_straigt(vent_line, grid)
             
-    dangerous_positions = 0
-
-    print('\n'.join(' '.join(str(x) for x in row) for row in grid))
-
-    for i in grid:
-        for v in i:
-            if v >= 2:
-                dangerous_positions += 1
-
-    # 972027
-    # 971028
-    # 971028
+    dangerous_positions = sum([1 if x > 1 else 0 for x in [j for sub in grid for j in sub]])
 
     print("[TASK 1]: " + str(dangerous_positions))
 
-    # print("[TASK 1]: " + str(int(gamma_rate, 2) * int(epsilon_rate, 2)))
+    def calculate_line_diagonal(vent_line, the_grid):
+        x_difference = int(vent_line[0]) - int(vent_line[2])
+        y_difference = int(vent_line[1]) - int(vent_line[3])
 
-    # print("[TASK 2]: " + str(findListValue(puzzle_input, True, 0) * findListValue(puzzle_input, False, 0)))
+        for i in range(0, abs(x_difference) + 1):
+            the_grid[int(vent_line[3]) + (i * unit(y_difference))][int(vent_line[2]) + (i * unit(x_difference))] += 1
+
+    for vent_line in puzzle_input:
+        if vent_line[0] != vent_line[2] and vent_line[1] != vent_line[3]:
+            calculate_line_diagonal(vent_line, grid)
+
+    dangerous_positions = sum([1 if x > 1 else 0 for x in [j for sub in grid for j in sub]])
+
+    print("[TASK 2]: " + str(dangerous_positions))
 
 if __name__ == "__main__":
     main()
